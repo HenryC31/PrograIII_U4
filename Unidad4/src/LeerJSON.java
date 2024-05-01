@@ -8,13 +8,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class LeerJSON {
+	static boolean si = false;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Ventana ventana = new Ventana();
 	}
 
-	public static void leer() {
+	public static boolean leer(String usu, String contra) {
+		si = false;
 		JSONParser jsonParser = new JSONParser();
 
 		try (FileReader reader = new FileReader("usuarios.json")) {
@@ -23,7 +25,10 @@ public class LeerJSON {
 			JSONArray usuariosArray = (JSONArray) obj;
 			System.out.println("json: " + usuariosArray);
 			for (Object usuario : usuariosArray) {
-				mostrar((JSONObject) usuario);
+				if (evaluar((JSONObject) usuario, usu, contra)) {
+					si = true;
+					return si;
+				}
 			}
 
 		} catch (FileNotFoundException e) {
@@ -34,44 +39,56 @@ public class LeerJSON {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return si;
+	}
+
+	public static boolean evaluar(JSONObject json, String usu, String contra) {
+		JSONObject usuario = (JSONObject) json.get("usuario");
+//		System.out.println("Usuario: ");
+		if (usu.equals((String) usuario.get("usu")) && contra.equals((String) usuario.get("contra"))) {
+//			System.out.println("Si jala");
+			return true;
+		} else {
+//			System.out.println("No jala");
+			return false;
+		}
+//
+////		String nombreString = (String) usuario.get("nombre");
+//		System.out.println("Nombre: " + (String) usuario.get("nombre"));
+//
+////		String correoString = (String) usuario.get("correo");
+//		System.out.println("Usuario: " + (String) usuario.get("usu"));
+//
+////		String claseString = (String) usuario.get("clase");
+//		System.out.println("Contraseña: " + (usuario.get("contra")));
 	}
 
 	public static void mostrar(JSONObject jsonObject) {
 		JSONObject usuario = (JSONObject) jsonObject.get("usuario");
 		System.out.println("Usuario: ");
 
-		String nombreString = (String) usuario.get("nombre");
-		System.out.println("Nombre: " + nombreString);
+//		String nombreString = (String) usuario.get("nombre");
+		System.out.println("Nombre: " + (String) usuario.get("nombre"));
 
-		String correoString = (String) usuario.get("correo");
-		System.out.println("Correo: " + correoString);
+//		String correoString = (String) usuario.get("correo");
+		System.out.println("Usuario: " + (String) usuario.get("usu"));
 
-		String claseString = (String) usuario.get("clase");
-		System.out.println("Clase: " + claseString);
+//		String claseString = (String) usuario.get("clase");
+		System.out.println("Contraseña: " + (usuario.get("contra")));
 
 	}
 
 	public static void guardar() {
 
-		JSONObject telefono1 = new JSONObject();
-		telefono1.put("nombre", "Juan");
-
-		JSONObject telefono2 = new JSONObject();
-		telefono2.put("nombre", "Juan");
-
-		JSONArray telefonoArray = new JSONArray();
-		telefonoArray.add(telefono1);
-		telefonoArray.add(telefono2);
-
 		JSONObject usuario1 = new JSONObject();
-		usuario1.put("nombre", "Juan");
-		usuario1.put("correo", "henry@uabcs");
-		usuario1.put("clase", "Programacion");
+		usuario1.put("nombre", "Henry");
+		usuario1.put("usu", "henryc22");
+		usuario1.put("contra", "hola123");
 
 		JSONObject usuario2 = new JSONObject();
 		usuario2.put("nombre", "Armando");
-		usuario2.put("correo", "armando@uabcs");
-		usuario2.put("clase", "Estructura de datos");
+		usuario2.put("usu", "armando33");
+		usuario2.put("contra", "adios123");
 
 		JSONObject datos_usuario1 = new JSONObject();
 		datos_usuario1.put("usuario", usuario1);
